@@ -1,0 +1,48 @@
+﻿rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // 1. Users Base Collection: users/{userId}
+    // Users can read and write only their own user data
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // 2. Medical Profiles Collection: medical_profiles/{userId}
+    // Highly sensitive medical info - strictly restricted to the user themselves
+    match /medical_profiles/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // 3. Emergencies Collection: emergencies/{incidentId}
+    // Authenticated users can create emergencies tied to their UID
+    // Users can read their own emergencies
+    match /emergencies/{incidentId} {
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || request.auth.token.role in ['DRIVER', 'ADMIN']);
+      allow update: if isAuthenticated() && (resource.data.userId == request.auth.uid || request.auth.token.role in ['DRIVER', 'ADMIN']);
+
+      // Nested incident events: emergencies/{incidentId}/incident_events/{eventId}
+      match /incident_events/{eventId} {
+        allow read, create: if isAuthenticated();
+      }
+    }
+
+    // 4. Ambulances Fleet Collection: ambulances/{ambulanceId}
+    // Authenticated users can read active fleet status to receive ambulance telemetry
+    // Writes restricted to drivers and admins
+    match /ambulances/{ambulanceId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && request.auth.token.role in ['DRIVER', 'ADMIN'];
+    }
+  }
+}

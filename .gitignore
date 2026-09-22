@@ -1,0 +1,54 @@
+# Environments and secrets
+.env
+.env.*
+serviceAccountKey.json
+*.pem
+*.key
+*.p12
+*.jks
+credentials.json
+client_secret*.json
+
+# Firebase secrets
+google-services.json
+GoogleService-Info.plist
+firebase_app_id_file.json
+
+# Flutter / Dart
+resq_app/.dart_tool/
+resq_app/.flutter-plugins
+resq_app/.flutter-plugins-dependencies
+resq_app/.packages
+resq_app/.pub-cache/
+resq_app/.pub/
+resq_app/build/
+**/doc/api/
+resq_app/lib/generated_plugin_registrant.dart
+
+# Python / Backend
+resq_backend/__pycache__/
+resq_backend/*__pycache__*
+**/__pycache__/
+*.py[cod]
+*$py.class
+resq_backend/.pytest_cache/
+resq_backend/.coverage
+resq_backend/htmlcov/
+resq_backend/venv/
+resq_backend/env/
+resq_backend/.venv/
+venv/
+env/
+.venv/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+*.swp
+*.class
+*.log
