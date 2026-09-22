@@ -88,7 +88,18 @@ def init_firebase_admin():
         import firebase_admin
         from firebase_admin import credentials, firestore
 
-        if cred_path and os.path.exists(cred_path):
+        service_account_raw = settings.FIREBASE_SERVICE_ACCOUNT_JSON or os.environ.get("FIREBASE_SERVICE_ACCOUNT_JSON") or os.environ.get("FIREBASE_CREDENTIALS_JSON")
+        if service_account_raw:
+            import json
+            cred_dict = json.loads(service_account_raw)
+            cred = credentials.Certificate(cred_dict)
+            firebase_admin.initialize_app(cred, {
+                "projectId": settings.FIREBASE_PROJECT_ID,
+            })
+            _db_client = firestore.client()
+            logger.info("Firebase Admin SDK initialized using environment variable JSON credentials")
+            _firebase_initialized = True
+        elif cred_path and os.path.exists(cred_path):
             cred = credentials.Certificate(cred_path)
             firebase_admin.initialize_app(cred, {
                 "projectId": settings.FIREBASE_PROJECT_ID,

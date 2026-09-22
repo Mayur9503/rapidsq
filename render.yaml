@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: rapidsq-backend
+    runtime: python
+    rootDir: resq_backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    region: oregon
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: ENVIRONMENT
+        value: production
+      - key: PORT
+        value: 8000
+      - key: HOST
+        value: 0.0.0.0
+      - key: PROJECT_NAME
+        value: ResQ Emergency Dispatch Backend
+      - key: FIREBASE_PROJECT_ID
+        value: rapidsq-firebase
+      - key: AMBULANCE_DOCUMENT_ID
+        value: main
+      - key: AMBULANCE_DEFAULT_VEHICLE
+        value: MH 12 AB 4521
+      - key: AMBULANCE_DEFAULT_DRIVER
+        value: Rahul Patil
+      - key: AMBULANCE_DEFAULT_PHONE
+        value: "+91 98765 12345"
+      - key: ALLOW_DEV_TOKEN_AUTH
+        value: true
+      - key: FIREBASE_SERVICE_ACCOUNT_JSON
+        sync: false

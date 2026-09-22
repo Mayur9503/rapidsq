@@ -1,4 +1,4 @@
-﻿from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional
 
 class Settings(BaseSettings):
@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     # Firebase Admin SDK Configuration
     FIREBASE_PROJECT_ID: str = "rapidsq-firebase"
     FIREBASE_CREDENTIALS_PATH: Optional[str] = "serviceAccountKey.json"
+    FIREBASE_SERVICE_ACCOUNT_JSON: Optional[str] = None
 
     # Single Ambulance Configuration
     AMBULANCE_DOCUMENT_ID: str = "main"
