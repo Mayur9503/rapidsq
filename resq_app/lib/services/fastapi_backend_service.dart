@@ -9,7 +9,7 @@ class FastApiBackendService {
       : baseUrl = customBaseUrl ??
             const String.fromEnvironment(
               'BACKEND_URL',
-              defaultValue: kIsWeb ? 'http://localhost:8000' : 'http://10.0.2.2:8000',
+              defaultValue: 'https://rapidsq-backend.onrender.com',
             );
 
   void setBaseUrl(String url) {
